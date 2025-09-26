@@ -28,12 +28,8 @@ public class CargarProductoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productoViewModel = new ViewModelProvider(requireActivity()).get(ProductoViewModel.class);
-        //hacer booleano con dos observadores
-        productoViewModel.getErrorLiveData().observe(getViewLifecycleOwner(), error -> {
-            binding.textViewError.setText(error);
-        });
-        productoViewModel.getErrorVisibleLiveData().observe(getViewLifecycleOwner(), visible -> {
-            binding.textViewError.setVisibility(visible ? View.VISIBLE : View.GONE);
+        productoViewModel.getErrorParaMostrarLiveData().observe(getViewLifecycleOwner(), error -> {
+            android.widget.Toast.makeText(requireContext(), error, android.widget.Toast.LENGTH_LONG).show();
         });
 
         binding.editTextCodigo.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);

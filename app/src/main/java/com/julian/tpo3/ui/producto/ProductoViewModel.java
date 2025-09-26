@@ -25,6 +25,7 @@ public class ProductoViewModel extends AndroidViewModel {
     private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> productosVaciosLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> errorVisibleLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> errorParaMostrarLiveData = new MutableLiveData<>();
 
     public ProductoViewModel(@NonNull Application application) {
         super(application);
@@ -46,9 +47,14 @@ public class ProductoViewModel extends AndroidViewModel {
         return errorVisibleLiveData;
     }
 
+    public LiveData<String> getErrorParaMostrarLiveData() {
+        return errorParaMostrarLiveData;
+    }
+
     // validaciones
     public void agregarProducto(String codigo, String descripcion, double precio) {
-        if (codigo.isEmpty() || descripcion.isEmpty()) {
+        boolean faltaCampo = codigo.isEmpty() || descripcion.isEmpty();
+        if (faltaCampo) {
             setError("No puede haber campos vacios");
             return;
         }
@@ -76,6 +82,10 @@ public class ProductoViewModel extends AndroidViewModel {
     public void setError(String error) {
         errorLiveData.setValue(error);
         errorVisibleLiveData.setValue(error != null && !error.isEmpty());
+        // Solo emitir error válido para mostrar
+        if (error != null && !error.isEmpty()) {
+            errorParaMostrarLiveData.setValue(error);
+        }
     }
 
     // listar productos ordenados
