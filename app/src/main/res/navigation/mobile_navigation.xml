@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.julian.tpo3.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_cargar_producto"
+        android:name="com.julian.tpo3.ui.producto.CargarProductoFragment"
+        android:label="Cargar Producto" />
+    <fragment
+        android:id="@+id/nav_listar_producto"
+        android:name="com.julian.tpo3.ui.producto.ListarProductoFragment"
+        android:label="Listar Productos" />
+
+    <fragment
+        android:id="@+id/nav_salir"
+        android:name="com.julian.tpo3.ui.home.HomeFragment"
+        android:label="Salir" />
+</navigation>

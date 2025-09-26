@@ -1,0 +1,66 @@
+package com.julian.tpo3.ui.producto;
+
+import static com.julian.tpo3.MainActivity.productos;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import com.julian.tpo3.model.Producto;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class ProductoViewModel extends ViewModel {
+
+
+
+    private final MutableLiveData<List<Producto>> productosLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+
+    public LiveData<List<Producto>> getProductosLiveData() {
+        return productosLiveData;
+    }
+
+    public LiveData<String> getErrorLiveData() {
+        return errorLiveData;
+    }
+
+    // validaciones
+    public void agregarProducto(String codigo, String descripcion, double precio) {
+        if (codigo.isEmpty() || descripcion.isEmpty()) {
+            errorLiveData.setValue("No puede haber campos vacios");
+            return;
+        }
+        for (Producto p : productos) {
+            if (p.getCodigo().equals(codigo)) {
+                errorLiveData.setValue("El codigo ya existe");
+                return;
+            }
+        }
+        // Validar precio
+        if (precio <= 0) {
+            errorLiveData.setValue("El precio debe ser mayor a 0");
+            return;
+        }
+        Producto nuevo = new Producto(codigo, descripcion, precio);
+        productos.add(nuevo);
+
+        productosLiveData.setValue(new ArrayList<>(productos));
+        errorLiveData.setValue(""); // Limpiar
+    }
+
+
+
+
+    public void actualizarLista() {
+
+        productosLiveData.setValue(new ArrayList<>(productos));
+    }
+
+    public void setError(String error) {
+        errorLiveData.setValue(error);
+    }
+}
