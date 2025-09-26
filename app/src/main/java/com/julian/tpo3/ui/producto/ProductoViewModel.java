@@ -2,6 +2,10 @@ package com.julian.tpo3.ui.producto;
 
 import static com.julian.tpo3.MainActivity.productos;
 
+import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,12 +17,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ProductoViewModel extends ViewModel {
+public class ProductoViewModel extends AndroidViewModel {
 
 
 
     private final MutableLiveData<List<Producto>> productosLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+
+    public ProductoViewModel(@NonNull Application application) {
+        super(application);
+    }
 
     public LiveData<List<Producto>> getProductosLiveData() {
         return productosLiveData;
@@ -51,10 +59,7 @@ public class ProductoViewModel extends ViewModel {
         productosLiveData.setValue(new ArrayList<>(productos));
         errorLiveData.setValue(""); // Limpiar
     }
-
-
-
-
+    // actualizar lista
     public void actualizarLista() {
 
         productosLiveData.setValue(new ArrayList<>(productos));

@@ -47,11 +47,11 @@ public class ListarProductoFragment extends Fragment {
                 textViewVacio.setVisibility(View.GONE);
             }
         });
-        // Mostrar la lista ordenada alfabéticamente por descripción
+        // lista ordenada
         productoViewModel.listarProductosPorDescripcion();
     }
 
-    // Adaptador interno para el RecyclerView
+    // Adapterpara el RecyclerView
     private static class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder> {
         private List<Producto> productos;
 
@@ -90,7 +90,7 @@ public class ListarProductoFragment extends Fragment {
 
             public void bind(Producto producto) {
                 text1.setText(producto.getDescripcion());
-                text2.setText("Código: " + producto.getCodigo() + " | Precio: $" + producto.getPrecio());
+                text2.setText("Código: " + producto.getCodigo() + " || Precio: $" + producto.getPrecio());
             }
         }
     }
