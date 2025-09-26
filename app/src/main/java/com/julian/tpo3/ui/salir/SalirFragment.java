@@ -8,42 +8,30 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.lifecycle.ViewModelProvider;
-import com.julian.tpo3.R;
+
+import com.julian.tpo3.databinding.FragmentSalirBinding;
 
 public class SalirFragment extends Fragment {
-    private SalirFragmentViewModel viewModel;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_salir, container, false);
-        viewModel = new ViewModelProvider(this).get(SalirFragmentViewModel.class);
-        observarViewModel();
-        viewModel.solicitarSalir();
-        return root;
-    }
-
-    private void observarViewModel() {
-        viewModel.getMostrarDialogo().observe(getViewLifecycleOwner(), mostrar -> {
-            if (mostrar != null && mostrar) mostrarDialogoSalir();
-        });
-        viewModel.getCerrarApp().observe(getViewLifecycleOwner(), cerrar -> {
-            if (cerrar != null && cerrar && getActivity() != null) getActivity().finish();
-        });
-        viewModel.getNavegarAtras().observe(getViewLifecycleOwner(), atras -> {
-            if (atras != null && atras && getActivity() != null) getActivity().onBackPressed();
-        });
+        FragmentSalirBinding binding = FragmentSalirBinding.inflate(inflater, container, false);
+        mostrarDialogoSalir();
+        return binding.getRoot();
     }
 
     private void mostrarDialogoSalir() {
         if (getActivity() == null) return;
         new AlertDialog.Builder(getActivity())
-                .setTitle("Salir")
-                .setMessage("¿Desea cerrar la aplicación?")
-                .setPositiveButton("Sí", (dialog, which) -> viewModel.confirmarSalir())
-                .setNegativeButton("No", (dialog, which) -> viewModel.cancelarSalir())
-                .setCancelable(false)
-                .show();
+            .setTitle("Cerrar sesión")
+            .setMessage("¿Está seguro que desea salir?")
+            .setPositiveButton("Sí", (dialog, which) -> {
+                getActivity().finish();
+            })
+            .setNegativeButton("No", (dialog, which) -> {
+                dialog.dismiss();
+            })
+            .setCancelable(false)
+            .show();
     }
 }

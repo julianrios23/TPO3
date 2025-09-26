@@ -23,6 +23,8 @@ public class ProductoViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<Producto>> productosLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> productosVaciosLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> errorVisibleLiveData = new MutableLiveData<>();
 
     public ProductoViewModel(@NonNull Application application) {
         super(application);
@@ -36,37 +38,44 @@ public class ProductoViewModel extends AndroidViewModel {
         return errorLiveData;
     }
 
+    public LiveData<Boolean> getProductosVaciosLiveData() {
+        return productosVaciosLiveData;
+    }
+
+    public LiveData<Boolean> getErrorVisibleLiveData() {
+        return errorVisibleLiveData;
+    }
+
     // validaciones
     public void agregarProducto(String codigo, String descripcion, double precio) {
         if (codigo.isEmpty() || descripcion.isEmpty()) {
-            errorLiveData.setValue("No puede haber campos vacios");
+            setError("No puede haber campos vacios");
             return;
         }
         for (Producto p : productos) {
             if (p.getCodigo().equals(codigo)) {
-                errorLiveData.setValue("El codigo ya existe");
+                setError("El codigo ya existe");
                 return;
             }
         }
         // Validar precio
         if (precio <= 0) {
-            errorLiveData.setValue("El precio debe ser mayor a 0");
+            setError("El precio debe ser mayor a 0");
             return;
         }
         Producto nuevo = new Producto(codigo, descripcion, precio);
         productos.add(nuevo);
-
-        productosLiveData.setValue(new ArrayList<>(productos));
-        errorLiveData.setValue(""); // Limpiar
+        actualizarProductosYEstadoVacio(new ArrayList<>(productos));
+        setError(""); // Limpiar
     }
     // actualizar lista
     public void actualizarLista() {
-
-        productosLiveData.setValue(new ArrayList<>(productos));
+        actualizarProductosYEstadoVacio(new ArrayList<>(productos));
     }
 
     public void setError(String error) {
         errorLiveData.setValue(error);
+        errorVisibleLiveData.setValue(error != null && !error.isEmpty());
     }
 
     // listar productos ordenados
@@ -78,6 +87,19 @@ public class ProductoViewModel extends AndroidViewModel {
                 return p1.getDescripcion().compareToIgnoreCase(p2.getDescripcion());
             }
         });
-        productosLiveData.setValue(productosOrdenados);
+        actualizarProductosYEstadoVacio(productosOrdenados);
+    }
+
+    private void actualizarProductosYEstadoVacio(List<Producto> lista) {
+        productosLiveData.setValue(lista);
+        productosVaciosLiveData.setValue(lista == null || lista.isEmpty());
+    }
+
+    public double parsePrecio(String precioStr) {
+        try {
+            return Double.parseDouble(precioStr);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }

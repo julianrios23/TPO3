@@ -9,18 +9,24 @@
         android:id="@+id/editTextCodigo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:padding="12dp"
         android:hint="Código" />
 
     <EditText
         android:id="@+id/editTextDescripcion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:padding="12dp"
         android:hint="Descripción" />
 
     <EditText
         android:id="@+id/editTextPrecio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:padding="12dp"
         android:hint="Precio"
         android:inputType="numberDecimal" />
 
@@ -39,4 +45,3 @@
         android:text="" />
 
 </LinearLayout>
-

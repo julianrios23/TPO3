@@ -28,10 +28,12 @@ public class CargarProductoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         productoViewModel = new ViewModelProvider(requireActivity()).get(ProductoViewModel.class);
-
+        //hacer booleano con dos observadores
         productoViewModel.getErrorLiveData().observe(getViewLifecycleOwner(), error -> {
             binding.textViewError.setText(error);
-            binding.textViewError.setVisibility(error != null && !error.isEmpty() ? View.VISIBLE : View.GONE);
+        });
+        productoViewModel.getErrorVisibleLiveData().observe(getViewLifecycleOwner(), visible -> {
+            binding.textViewError.setVisibility(visible ? View.VISIBLE : View.GONE);
         });
 
         binding.editTextCodigo.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
@@ -40,20 +42,12 @@ public class CargarProductoFragment extends Fragment {
             String codigo = binding.editTextCodigo.getText().toString().trim();
             String descripcion = binding.editTextDescripcion.getText().toString().trim();
             String precioStr = binding.editTextPrecio.getText().toString().trim();
-            double precio = precioStr.isEmpty() ? 0 : parsePrecio(precioStr);
+            double precio = precioStr.isEmpty() ? 0 : productoViewModel.parsePrecio(precioStr);
             productoViewModel.agregarProducto(codigo, descripcion, precio);
             limpiarFormulario();
         });
     }
-
-    private double parsePrecio(String precioStr) {
-        try {
-            return Double.parseDouble(precioStr);
-        } catch (NumberFormatException e) {
-            productoViewModel.setError("Precio NO Valido");
-            return 0;
-        }
-    }
+    //hacer logica en view model
 
     private void limpiarFormulario() {
         binding.editTextCodigo.setText("");

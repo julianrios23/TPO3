@@ -19,7 +19,7 @@ El usuario ingresa el código, descripción y precio del producto en los campos 
 Al presionar el botón "Agregar Producto", se ejecuta el siguiente flujo:
 b. Código ejecutado
 Binding y obtención de datos
-El fragmento usa View Binding para acceder a los campos. Obtiene los valores ingresados por el usuario.
+El fragment usa View Binding para acceder a los campos. Obtiene los valores ingresados por el usuario.
 Conversión y validación
 El valor del precio se convierte de texto a número. Si la conversión falla, se muestra un error usando LiveData.
 Llamada al ViewModel
