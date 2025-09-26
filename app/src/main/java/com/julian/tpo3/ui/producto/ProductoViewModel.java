@@ -63,4 +63,16 @@ public class ProductoViewModel extends ViewModel {
     public void setError(String error) {
         errorLiveData.setValue(error);
     }
+
+    // listar productos ordenados
+    public void listarProductosPorDescripcion() {
+        List<Producto> productosOrdenados = new ArrayList<>(productos);
+        Collections.sort(productosOrdenados, new Comparator<Producto>() {
+            @Override
+            public int compare(Producto p1, Producto p2) {
+                return p1.getDescripcion().compareToIgnoreCase(p2.getDescripcion());
+            }
+        });
+        productosLiveData.setValue(productosOrdenados);
+    }
 }

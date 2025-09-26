@@ -51,26 +51,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-        /*
-        // salir esta bien aca?
-        navigationView.setNavigationItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.nav_salir) {
-                // Mostrar diálogo para salir
-                new androidx.appcompat.app.AlertDialog.Builder(this)
-                        .setTitle("Salir")
-                        .setMessage("¿Desea cerrar la aplicación?")
-                        .setPositiveButton("Sí", (dialog, which) -> finish())
-                        .setNegativeButton("No", null)
-                        .show();
-                drawer.closeDrawers();
-                return true;
-            } else {
-                boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
-                drawer.closeDrawers();
-                return handled;
-            }
-        });*/
+
     }
 
     @Override

@@ -47,7 +47,8 @@ public class ListarProductoFragment extends Fragment {
                 textViewVacio.setVisibility(View.GONE);
             }
         });
-        productoViewModel.actualizarLista();
+        // Mostrar la lista ordenada alfabéticamente por descripción
+        productoViewModel.listarProductosPorDescripcion();
     }
 
     // Adaptador interno para el RecyclerView
@@ -94,4 +95,3 @@ public class ListarProductoFragment extends Fragment {
         }
     }
 }
-
