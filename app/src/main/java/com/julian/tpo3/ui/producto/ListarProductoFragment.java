@@ -19,7 +19,7 @@ import com.julian.tpo3.model.Producto;
 import java.util.List;
 
 public class ListarProductoFragment extends Fragment {
-    private ProductoViewModel productoViewModel;
+    private ListarProductoViewModel listarProductoViewModel;
     private RecyclerView recyclerView;
     private TextView textViewVacio;
     private FragmentListarProductoBinding binding;
@@ -39,15 +39,15 @@ public class ListarProductoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        productoViewModel = new ViewModelProvider(requireActivity()).get(ProductoViewModel.class);
-        productoViewModel.getProductosLiveData().observe(getViewLifecycleOwner(), productos -> {
+        listarProductoViewModel = new ViewModelProvider(requireActivity()).get(ListarProductoViewModel.class);
+        listarProductoViewModel.getProductosLiveData().observe(getViewLifecycleOwner(), productos -> {
             //actualizar lista
             ((ProductoAdapter)recyclerView.getAdapter()).setProductos(productos);
         });
-        productoViewModel.getProductosVaciosLiveData().observe(getViewLifecycleOwner(), vacio -> {
+        listarProductoViewModel.getProductosVaciosLiveData().observe(getViewLifecycleOwner(), vacio -> {
             textViewVacio.setVisibility(vacio ? View.VISIBLE : View.GONE);
         });
         // lista ordenada
-        productoViewModel.listarProductosPorDescripcion();
+        listarProductoViewModel.listarProductosPorDescripcion();
     }
 }

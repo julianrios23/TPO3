@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.julian.tpo3.databinding.FragmentCargarProductoBinding;
 
 public class CargarProductoFragment extends Fragment {
-    private ProductoViewModel productoViewModel;
+    private CargarProductoViewModel cargarProductoViewModel;
     private FragmentCargarProductoBinding binding;
 
     @Nullable
@@ -27,9 +27,14 @@ public class CargarProductoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        productoViewModel = new ViewModelProvider(requireActivity()).get(ProductoViewModel.class);
-        productoViewModel.getErrorParaMostrarLiveData().observe(getViewLifecycleOwner(), error -> {
+        cargarProductoViewModel = new ViewModelProvider(requireActivity()).get(CargarProductoViewModel.class);
+        cargarProductoViewModel.getErrorLiveData().observe(getViewLifecycleOwner(), error -> {
             android.widget.Toast.makeText(requireContext(), error, android.widget.Toast.LENGTH_LONG).show();
+        });
+        cargarProductoViewModel.getProductoAgregadoLiveData().observe(getViewLifecycleOwner(), agregado -> {
+            if (Boolean.TRUE.equals(agregado)) {
+                android.widget.Toast.makeText(requireContext(), "Producto agregado con éxito", android.widget.Toast.LENGTH_SHORT).show();
+            }
         });
 
         binding.editTextCodigo.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
@@ -38,8 +43,13 @@ public class CargarProductoFragment extends Fragment {
             String codigo = binding.editTextCodigo.getText().toString().trim();
             String descripcion = binding.editTextDescripcion.getText().toString().trim();
             String precioStr = binding.editTextPrecio.getText().toString().trim();
-            double precio = precioStr.isEmpty() ? 0 : productoViewModel.parsePrecio(precioStr);
-            productoViewModel.agregarProducto(codigo, descripcion, precio);
+            double precio = 0;
+            try {
+                precio = Double.parseDouble(precioStr);
+            } catch (NumberFormatException e) {
+                // Si el campo está vacío o no es válido, precio queda en 0
+            }
+            cargarProductoViewModel.agregarProducto(codigo, descripcion, precio);
             limpiarFormulario();
         });
     }
